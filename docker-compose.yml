@@ -7,6 +7,15 @@ services:
       - 9000:9000
       - 9092:9092
     container_name: sonarqube
+    depends_on:
+        - "db"        
+    environment:
+      - SONARQUBE_JDBC_URL=jdbc:postgresql://dbpostgresA:5432/sonar
+    volumes:
+      - sonarqube_conf:/opt/sonarqube/conf
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+      - sonarqube_bundled-plugins:/opt/sonarqube/lib/bundled-plugins    
   jenkins:
     build:
       context: jenkins/
@@ -21,3 +30,29 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     depends_on:
       - sonarqube
+  db:
+    container_name: "dbpostgresA"
+    image: postgres
+    environment:
+      - POSTGRES_USER=sonar
+      - POSTGRES_PASSWORD=sonar
+    ports:
+      - "5432:5432"      
+    volumes:
+      - postgresql:/var/lib/postgresql
+      - postgresql_data:/var/lib/postgresql/data
+  pgadmin:
+    image: thajeztah/pgadmin4
+    depends_on:
+      - "db" 
+    restart: unless-stopped
+    ports:
+      - '9080:5050'
+
+volumes:
+  sonarqube_conf:
+  sonarqube_data:
+  sonarqube_extensions:
+  sonarqube_bundled-plugins:
+  postgresql:
+  postgresql_data:
