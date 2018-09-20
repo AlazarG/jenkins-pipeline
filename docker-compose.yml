@@ -29,6 +29,12 @@ services:
       - /tmp/jenkins:/var/jenkins_home #Remember that, the tmp directory is designed to be wiped on system reboot.
       - /var/run/docker.sock:/var/run/docker.sock
       - /usr/bin/docker:/usr/bin/docker
+      - /usr/lib64/libsystemd-journal.so.0:/usr/lib/x86_64-linux-gnu/libsystemd-journal.so.0     
+      - /usr/lib64/libsystemd-id128.so.0:/usr/lib/x86_64-linux-gnu/libsystemd-id128.so.0     
+      - /usr/lib64/libdevmapper.so.1.02:/usr/lib/x86_64-linux-gnu/libdevmapper.so.1.02     
+      - /usr/lib64/libgcrypt.so.11:/usr/lib/x86_64-linux-gnu/libgcrypt.so.11     
+      - /usr/lib64/libdw.so.1:/usr/lib/x86_64-linux-gnu/libdw.so.1  
+      - /usr/lib64/libltdl.so.7:/usr/lib/x86_64-linux-gnu/libltdl.so.7
     depends_on:
       - sonarqube
   db:
